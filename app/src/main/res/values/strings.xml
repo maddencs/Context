@@ -6,4 +6,20 @@
     <string name="current_wifi">Current WiFi Network:</string>
     <string name="title_activity_add_wifi_note">AddWifiNote</string>
     <string name="add_wifi_note">Add a Wifi note</string>
+    <string name="note_title">Title</string>
+    <string name="note_body">Write something here...</string>
+    <string name="save_note">Save note</string>
+    <string name="cancel_note">Discard note</string>
+    <string name="title_activity_available_networks">Available Wifi Networks</string>
+    <string name="view_networks">View All Networks</string>
+    <string name="title_activity_note_list">NoteList</string>
+    <string name="no_notes">This network doesn\'t have any notes. Tap the screen to add one.</string>
+    <string name="title_activity_note">Note</string>
+    <string name="title_activity_wifi_network">WifiNetwork</string>
+    <string name="title_activity_wifi_network2">WifiNetwork2</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragmentEditNote">Edit note?</string>
+    <string name="fragmentDeleteNote">Delete note?</string>
 </resources>

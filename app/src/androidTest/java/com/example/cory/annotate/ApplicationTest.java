@@ -1,4 +1,4 @@
-package com.example.cory.context;
+package com.example.cory.annotate;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

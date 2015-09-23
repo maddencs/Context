@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cory.context" >
+    package="com.example.cory.annotate" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Context"
+            android:name=".Annotate"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +22,26 @@
         <activity
             android:name=".AddWifiNote"
             android:label="@string/title_activity_add_wifi_note"
-            android:parentActivityName=".Context" >
+            android:parentActivityName=".Annotate" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cory.context.Context" />
+                android:value="com.example.cory.annotate.Annotate" />
+        </activity>
+        <activity
+            android:name=".AvailableNetworks"
+            android:label="@string/title_activity_available_networks" >
+        </activity>
+        <activity
+            android:name=".NoteList"
+            android:label="@string/title_activity_note_list" >
+        </activity>
+        <activity
+            android:name=".Note"
+            android:label="@string/title_activity_note" >
+        </activity>
+        <activity
+            android:name=".WifiNetwork"
+            android:label="@string/title_activity_wifi_network" >
         </activity>
     </application>
 

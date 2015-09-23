@@ -1,4 +1,4 @@
-package com.example.cory.context;
+package com.example.cory.annotate;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -6,24 +6,18 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class Context extends AppCompatActivity {
+public class Annotate extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_context);
+        setContentView(R.layout.activity_annotate);
         setCurrentNetworkName();
-        if(isWifiConnected()){
-            Log.d("is_connected", "yup, connected");
-        } else {
-            Log.d("not_connected", "not connected");
-        }
 
     }
 
@@ -32,11 +26,16 @@ public class Context extends AppCompatActivity {
         WifiManager manager = (WifiManager) getSystemService(WIFI_SERVICE);
         WifiInfo info = manager.getConnectionInfo();
         String ssid = info.getSSID();
-        if(ssid.equals("<unknown ssid>")){
-            currNet.setText("Not connected to a network.");
+        if(!isWifiConnected()){
+            currNet.setText("Not connected to a wifi network.");
         } else {
             currNet.setText(ssid);
         }
+    }
+
+    public void viewNetworks(View view){
+        Intent intent = new Intent(this, AvailableNetworks.class);
+        startActivity(intent);
     }
 
     public void addWifiNote(View view){
@@ -49,11 +48,7 @@ public class Context extends AppCompatActivity {
 
     public boolean isWifiConnected(){
         ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if(manager.getActiveNetworkInfo() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return manager.getActiveNetworkInfo().getTypeName().equals("WIFI");
     }
 
     @Override
