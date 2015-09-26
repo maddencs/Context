@@ -1,18 +1,15 @@
 package com.example.cory.annotate;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-/**
+/*
  * Created by cory on 9/21/15.
  */
 public class AvailableNetworksAdapter extends ArrayAdapter<WifiNetwork>{
@@ -27,7 +24,7 @@ public class AvailableNetworksAdapter extends ArrayAdapter<WifiNetwork>{
 
     static class ViewHolder{
         TextView ssidView;
-        TextView rssiView;
+        ImageView rssiView;
         TextView noteCountView;
     }
 
@@ -39,14 +36,13 @@ public class AvailableNetworksAdapter extends ArrayAdapter<WifiNetwork>{
         if(convertView == null){
             convertView =  inflater.inflate(R.layout.listitem_available_network, parent, false);
             viewHolder.ssidView = (TextView) convertView.findViewById(R.id.ssid);
-            viewHolder.rssiView = (TextView) convertView.findViewById(R.id.signalStrength);
+            viewHolder.rssiView = (ImageView) convertView.findViewById(R.id.signalStrength);
             viewHolder.noteCountView = (TextView) convertView.findViewById(R.id.noteCount);
             convertView.setTag(viewHolder);
-        } else{
-            viewHolder = (ViewHolder) convertView.getTag();
         }
+        viewHolder = (ViewHolder) convertView.getTag();
         viewHolder.ssidView.setText(wifiNetworks[position].getSSID());
-        viewHolder.rssiView.setText(String.valueOf(wifiNetworks[position].getRSSI()));
+        viewHolder.rssiView.setImageResource(network.drawSignalStrength(context));
         viewHolder.noteCountView.setText("3 notes");
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

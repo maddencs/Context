@@ -16,7 +16,7 @@ public class Note extends AppCompatActivity {
     private String[] mTags;
     private long mNetworkId;
     private String mDateCreated;
-    private int mId;
+    private long mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class Note extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 

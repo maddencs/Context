@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
+/*
  * Created by cory on 9/21/15.
  */
 public class NoteAdapter extends ArrayAdapter<Note> {
@@ -59,6 +59,8 @@ public class NoteAdapter extends ArrayAdapter<Note> {
                    public void onClick(View v) {
                        DBManager manager = new DBManager(context);
                        manager.deleteNote(note.getId());
+                       Intent intent = new Intent(context, AvailableNetworks.class);
+                       context.startActivity(intent);
                    }
                });
                dialog.show();

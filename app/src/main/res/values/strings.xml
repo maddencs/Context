@@ -17,7 +17,7 @@
     <string name="title_activity_note">Note</string>
     <string name="title_activity_wifi_network">WifiNetwork</string>
     <string name="title_activity_wifi_network2">WifiNetwork2</string>
-
+    <string name="signalStrength">Signal Strength</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragmentEditNote">Edit note?</string>

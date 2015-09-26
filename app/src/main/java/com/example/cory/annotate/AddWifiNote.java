@@ -23,11 +23,11 @@ public class AddWifiNote extends Activity {
         Intent intent = getIntent();
         this.info = intent.getParcelableExtra("WifiInfo");
         if(info == null){
-            this.network = intent.getParcelableExtra("WifiNetwork");
-            this.bssid = network.getBSSID();
+            network = intent.getParcelableExtra("WifiNetwork");
+            bssid = network.getBSSID();
             setCurrentNetworkName(network.getSSID());
         } else {
-            this.bssid = info.getBSSID();
+            bssid = info.getBSSID();
             setCurrentNetworkName(info);
         }
     }
@@ -43,16 +43,13 @@ public class AddWifiNote extends Activity {
         TextView body = (TextView) findViewById(R.id.note_body);
         TextView title = (TextView) findViewById(R.id.note_title);
         Note note = new Note(title.getText().toString(), body.getText().toString(), null, null);
-        try{
-            network = manager.getNetworkByBSSID(bssid);
-            if(network.getId() == 0){
+            if(network != null){
+                network = new WifiNetwork(network.getSSID(), network.getBSSID(), network.getRSSI(), null);
+                network.setId(manager.saveNetwork(network));
+            } else{
                 network = new WifiNetwork(info.getSSID(), info.getBSSID(), info.getRssi(), null);
-                manager.saveNetwork(network);
+                network.setId(manager.saveNetwork(network));
             }
-        } catch(NullPointerException e){
-            network = new WifiNetwork(info.getSSID(), info.getBSSID(), info.getRssi(), null);
-            long networkId = manager.saveNetwork(network);
-            network.setId(networkId);
             note.setNetworkId(network.getId());
             long newNote = manager.saveNote(note);
             if(newNote < 0) {
@@ -62,7 +59,6 @@ public class AddWifiNote extends Activity {
                 Note queriedNote = manager.getNote(newNote);
                 makeToast(queriedNote.getNoteTitle());
             }
-        }
     }
 
     public void goHome(View view){

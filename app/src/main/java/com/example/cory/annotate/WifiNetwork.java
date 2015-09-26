@@ -1,6 +1,8 @@
 package com.example.cory.annotate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import com.example.cory.annotate.R;
-
-import java.util.List;
 
 public class WifiNetwork extends AppCompatActivity implements Parcelable {
     private long mId;
@@ -22,59 +22,59 @@ public class WifiNetwork extends AppCompatActivity implements Parcelable {
     private String mCustomSSID;
     private int mRSSI;
     private String mCapabilities;
+    private WifiNetwork network;
 
-    public WifiNetwork() {}
-
-    public WifiNetwork(String SSID, String BSSID, int RSSI, String capabilities) {
-        mSSID = SSID;
-        mBSSID = BSSID;
-        mRSSI = RSSI;
-        mCapabilities = capabilities;
+    public int drawSignalStrength(Context context){
+        int level = WifiManager.calculateSignalLevel(mRSSI, 5);
+        ImageView icon = new ImageView(context);
+        switch(String.valueOf(level)){
+            case "0":
+                return R.drawable.wifi_sig_none;
+            case "1":
+                return R.drawable.wifi_sig_1;
+            case "2":
+                return R.drawable.wifi_sig_2;
+            case "3":
+                return R.drawable.wifi_sig_3;
+            case "4":
+                return R.drawable.wifi_sig_full;
+        }
+        return R.drawable.wifi_sig_none;
     }
 
-    protected WifiNetwork(Parcel in) {
-        mId = in.readLong();
-        mSSID = in.readString();
-        mBSSID = in.readString();
-        mCustomSSID = in.readString();
-        mRSSI = in.readInt();
-        mCapabilities = in.readString();
-    }
-
-    public static final Creator<WifiNetwork> CREATOR = new Creator<WifiNetwork>() {
-        @Override
-        public WifiNetwork createFromParcel(Parcel in) {
-            return new WifiNetwork(in);
-        }
-
-        @Override
-        public WifiNetwork[] newArray(int size) {
-            return new WifiNetwork[size];
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DBManager manager = new DBManager(this);
         Intent intent = getIntent();
-        WifiNetwork network = intent.getParcelableExtra("WifiNetwork");
+        network = intent.getParcelableExtra("WifiNetwork");
+        mSSID = network.getSSID();
+        mBSSID = network.getBSSID();
+        mRSSI = network.getRSSI();
+        mCapabilities = network.getCapabilities();
         String bssid = network.getBSSID();
-        try{
-            Log.d("The network ID", String.valueOf(network.getId()));
-            Note[] notes = manager.getNotesByNetworkId(network.getId());
+        Log.d("The network ID", String.valueOf(network.getId()));
+        Note[] notes = manager.getNotesByNetworkId(network.getId());
+        if(notes.length > 0){
             NoteAdapter adapter = new NoteAdapter(this, notes);
             setContentView(R.layout.activity_note_list);
             ListView listView = (ListView) findViewById(R.id.list);
             listView.setAdapter(adapter);
-        } catch(NullPointerException e){
+        } else{
             setContentView(R.layout.no_notes);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.noNotesLayout);
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addNote();
+                }
+            });
         }
     }
 
-    public void addNote(View v){
+    public void addNote(){
         Intent intent = new Intent(this, AddWifiNote.class);
-        WifiNetwork network = new WifiNetwork(mSSID, mBSSID, mRSSI, mCapabilities);
         intent.putExtra("WifiNetwork", network);
         startActivity(intent);
     }
@@ -169,4 +169,33 @@ public class WifiNetwork extends AppCompatActivity implements Parcelable {
         dest.writeInt(mRSSI);
         dest.writeString(mCapabilities);
     }
+    public WifiNetwork() {}
+
+    public WifiNetwork(String SSID, String BSSID, int RSSI, String capabilities) {
+        mSSID = SSID;
+        mBSSID = BSSID;
+        mRSSI = RSSI;
+        mCapabilities = capabilities;
+    }
+
+    protected WifiNetwork(Parcel in) {
+        mId = in.readLong();
+        mSSID = in.readString();
+        mBSSID = in.readString();
+        mCustomSSID = in.readString();
+        mRSSI = in.readInt();
+        mCapabilities = in.readString();
+    }
+
+    public static final Creator<WifiNetwork> CREATOR = new Creator<WifiNetwork>() {
+        @Override
+        public WifiNetwork createFromParcel(Parcel in) {
+            return new WifiNetwork(in);
+        }
+
+        @Override
+        public WifiNetwork[] newArray(int size) {
+            return new WifiNetwork[size];
+        }
+    };
 }
